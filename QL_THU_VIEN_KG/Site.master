@@ -11,14 +11,14 @@
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
+
     <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
-    <%--lib --%>
-    <link href="https://cdn.jsdelivr.net/npm/fastbootstrap@2.2.0/dist/css/fastbootstrap.min.css" rel="stylesheet" integrity="sha256-V6lu+OdYNKTKTsVFBuQsyIlDiRWiOmtC8VQ8Lzdm2i4=" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
+    <%--alpinejs --%>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
     <form runat="server">
@@ -41,47 +41,74 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <div x-data="{ openSideBar: true, toggle() { this.openSideBar = ! this.openSideBar } }" class="layout">
-            <main class="layout-main px-4">
+        <div x-data="{ openSideBar: true, toggleSideBar() { this.openSideBar = !this.openSideBar } }" class="flex max-w-screen min-h-screen">
+            <%-- SIDE NAV --%>
+            <aside x-show="openSideBar" class="border-r-1 border-gray-200" style="width: 260px;">
+                <div class="flex items-center justify-between px-4 h-14">
+                    <div class="flex items-center gap-1.5 text-blue-600 text-xl">
+                        <i data-lucide="book" class="text-2xl"></i>
+                        <span class="text-xl font-bold text-gray-900">THU VIEN
+                        </span>
+                    </div>
+
+                    <div>
+                        <button x-on:click="toggleSideBar()" type="button" class="p-1 cursor-pointer">
+                            <i data-lucide="panel-left"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <nav class="mt-2 px-2" x-data="{route: ''}" x-init="route = window.location.pathname">
+                    <div class="flex flex-col gap-1.5">
+                        <a href="/" :class="route === '/' ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0  hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
+                            <i data-lucide="layout-dashboard"></i>
+                            Dashboard
+                        </a>
+
+                        <a href="/Books" :class="route === '/Books' ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0 [&_svg]:opacity-80 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
+                            <i class="text-2xl" data-lucide="book-copy"></i>
+                            Quản Lý Sách 
+                        </a>
+                    </div>
+                </nav>
+            </aside>
+
+            <%-- MAIN CONTAINER --%>
+            <main class="flex-1 w-[1px]">
+                <header class="flex items-center justify-between px-4 py-2 bg-white px-4 h-14">
+                    <div>
+                        <button x-show="!openSideBar" x-on:click="toggleSideBar()" type="button" class="p-1 cursor-pointer">
+                            <i data-lucide="panel-left"></i>
+                        </button>
+                    </div>
+                    <div>
+                        <asp:LoginView runat="server" ViewStateMode="Disabled">
+                            <AnonymousTemplate>
+                                <ul class="flex gap-1">
+                                    <li><a runat="server" href="~/Accounts/Register">Register</a></li>
+                                    <li><a runat="server" href="~/Accounts/Login">Log in</a></li>
+                                </ul>
+                            </AnonymousTemplate>
+                            <LoggedInTemplate>
+                                <ul class="flex gap-1">
+                                    <li><a runat="server" href="~/Accounts/Manage" title="Manage your account">Hello, <%: Context.User.Identity.GetUserName()  %>!</a></li>
+                                    <li>
+                                        <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
+                                    </li>
+                                </ul>
+                            </LoggedInTemplate>
+                        </asp:LoginView>
+                    </div>
+                </header>
                 <asp:ContentPlaceHolder ID="MainContent" runat="server">
                 </asp:ContentPlaceHolder>
             </main>
-            <aside x-show="openSideBar" class="layout-sidebar border-end">
-                <asp:LoginView runat="server" ViewStateMode="Disabled">
-                    <AnonymousTemplate>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a runat="server" href="~/Accounts/Register">Register</a></li>
-                            <li><a runat="server" href="~/Accounts/Login">Log in</a></li>
-                        </ul>
-                    </AnonymousTemplate>
-                    <LoggedInTemplate>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a runat="server" href="~/Accounts/Manage" title="Manage your account">Hello, <%: Context.User.Identity.GetUserId()   %>!</a></li>
-                            <li>
-                                <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
-                            </li>
-                        </ul>
-                    </LoggedInTemplate>
-                </asp:LoginView>
-                <button @click="toggle()" type="button" class="btn btn-discovery">Discovery button</button>
-
-                <ul class="list-group border-0" style="width: 250px;">
-                    <li class="list-group-item list-group-item-action">
-                        <a href="#">Menu 1</a>
-                    </li>
-                    <li class="list-group-item list-group-item-action">
-                        <a href="#">Menu 2</a>
-                    </li>
-                    <li class="list-group-item list-group-item-action">
-                        <a href="#">Menu 3</a>
-                    </li>
-                    <li class="list-group-item list-group-item-action">
-                        <a href="#">Menu 4</a>
-                    </li>
-                </ul>
-            </aside>
         </div>
 
     </form>
+
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>

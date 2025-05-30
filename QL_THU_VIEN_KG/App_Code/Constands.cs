@@ -10,8 +10,8 @@ public static class Constands
 {
     public static class SessionKeys
     {
-        public const string UserId = "UserId";
-        public const string UserName = "UserName";
+        public const string ID = "ID";
+        public const string Username = "Username";
         public const string FullName = "FullName";
         public const string Email = "Email";
         public const string Role = "Role";

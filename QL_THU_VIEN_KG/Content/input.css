@@ -1,0 +1,421 @@
+﻿@import "tailwindcss";
+
+@theme {
+    --radius: 0.5rem;
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.141 0.005 285.823);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.141 0.005 285.823);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.141 0.005 285.823);
+    --primary: oklch(0.606 0.25 292.717);
+    --primary-foreground: oklch(0.969 0.016 293.756);
+    --secondary: oklch(0.5071 0.293 286.507);
+    --secondary-foreground: oklch(0.21 0.006 285.885);
+    --success: oklch(0.7 0.2 150); /* xanh lá */
+    --success-foreground: oklch(0.1 0.005 150);
+    --warning: oklch(0.9 0.2 80); /* vàng */
+    --warning-foreground: oklch(0.2 0.01 80);
+    --error: oklch(0.577 0.245 27.325);
+    --error-foreground: oklch(1 0.01 27.325);
+    --info: oklch(0.65 0.2 240); /* xanh dương */
+    --info-foreground: oklch(0.1 0.01 240);
+    --muted: oklch(0.967 0.001 286.375);
+    --muted-foreground: oklch(0.552 0.016 285.938);
+    --accent: oklch(0.967 0.001 286.375);
+    --accent-foreground: oklch(0.21 0.006 285.885);
+    --disabled: oklch(0.9 0.01 286);
+    --disabled-foreground: oklch(0.5 0.01 286);
+    --border: oklch(0.92 0.004 286.32);
+    --input: oklch(0.92 0.004 286.32);
+    --ring: oklch(0.606 0.25 292.717);
+    --overlay: oklch(0 0 0 / 0.5); /* dùng cho modal */
+    --shadow: 0 2px 8px oklch(0 0 0 / 0.1);
+    --chart-1: oklch(0.646 0.222 41.116);
+    --chart-2: oklch(0.6 0.118 184.704);
+    --chart-3: oklch(0.398 0.07 227.392);
+    --chart-4: oklch(0.828 0.189 84.429);
+    --chart-5: oklch(0.769 0.188 70.08);
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.141 0.005 285.823);
+    --sidebar-primary: oklch(0.606 0.25 292.717);
+    --sidebar-primary-foreground: oklch(0.969 0.016 293.756);
+    --sidebar-accent: oklch(0.967 0.001 286.375);
+    --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+    --sidebar-border: oklch(0.92 0.004 286.32);
+    --sidebar-ring: oklch(0.606 0.25 292.717);
+}
+@utility bg-background {
+    background-color: var(--background);
+}
+
+@utility bg-foreground {
+    background-color: var(--foreground);
+}
+
+@utility bg-primary {
+    background-color: var(--primary);
+}
+
+@utility bg-primary-foreground {
+    background-color: var(--primary-foreground);
+}
+
+@utility bg-secondary {
+    background-color: var(--secondary);
+}
+
+@utility bg-secondary-foreground {
+    background-color: var(--secondary-foreground);
+}
+
+@utility bg-success {
+    background-color: var(--success);
+}
+
+@utility bg-success-foreground {
+    background-color: var(--success-foreground);
+}
+
+@utility bg-warning {
+    background-color: var(--warning);
+}
+
+@utility bg-warning-foreground {
+    background-color: var(--warning-foreground);
+}
+
+@utility bg-error {
+    background-color: var(--error);
+}
+
+@utility bg-error-foreground {
+    background-color: var(--error-foreground);
+}
+
+@utility bg-info {
+    background-color: var(--info);
+}
+
+@utility bg-info-foreground {
+    background-color: var(--info-foreground);
+}
+
+@utility text-background {
+    color: var(--background);
+}
+
+@utility text-foreground {
+    color: var(--foreground);
+}
+
+@utility text-primary {
+    color: var(--primary);
+}
+
+@utility text-primary-foreground {
+    color: var(--primary-foreground);
+}
+
+@utility text-secondary {
+    color: var(--secondary);
+}
+
+@utility text-secondary-foreground {
+    color: var(--secondary-foreground);
+}
+
+@utility text-success {
+    color: var(--success);
+}
+
+@utility text-success-foreground {
+    color: var(--success-foreground);
+}
+
+@utility text-warning {
+    color: var(--warning);
+}
+
+@utility text-warning-foreground {
+    color: var(--warning-foreground);
+}
+
+@utility text-error {
+    color: var(--error);
+}
+
+@utility text-error-foreground {
+    color: var(--error-foreground);
+}
+
+@utility text-info {
+    color: var(--info);
+}
+
+@utility text-info-foreground {
+    color: var(--info-foreground);
+}
+
+@utility border-primary {
+    border-color: var(--primary);
+}
+
+@utility border-secondary {
+    border-color: var(--secondary);
+}
+
+@utility border-success {
+    border-color: var(--success);
+}
+
+@utility border-warning {
+    border-color: var(--warning);
+}
+
+@utility border-error {
+    border-color: var(--error);
+}
+
+@utility border-info {
+    border-color: var(--info);
+}
+
+@utility ring-primary {
+    --tw-ring-color: var(--primary);
+}
+
+@utility ring-secondary {
+    --tw-ring-color: var(--secondary);
+}
+
+@utility ring-success {
+    --tw-ring-color: var(--success);
+}
+
+@utility ring-warning {
+    --tw-ring-color: var(--warning);
+}
+
+@utility ring-error {
+    --tw-ring-color: var(--error);
+}
+
+@utility ring-info {
+    --tw-ring-color: var(--info);
+}
+
+@utility fill-primary {
+    fill: var(--primary);
+}
+
+@utility fill-success {
+    fill: var(--success);
+}
+
+@utility fill-warning {
+    fill: var(--warning);
+}
+
+@utility fill-error {
+    fill: var(--error);
+}
+
+@utility fill-info {
+    fill: var(--info);
+}
+
+@utility stroke-primary {
+    stroke: var(--primary);
+}
+
+@utility stroke-success {
+    stroke: var(--success);
+}
+
+@utility stroke-warning {
+    stroke: var(--warning);
+}
+
+@utility stroke-error {
+    stroke: var(--error);
+}
+
+@utility stroke-info {
+    stroke: var(--info);
+}
+
+@utility placeholder-primary {
+    --tw-placeholder-color: var(--primary);
+}
+
+@utility placeholder-foreground {
+    --tw-placeholder-color: var(--foreground);
+}
+
+@utility placeholder-muted {
+    --tw-placeholder-color: var(--muted-foreground);
+}
+
+@utility border-background {
+    border-color: var(--background);
+}
+
+@utility border-foreground {
+    border-color: var(--foreground);
+}
+
+@utility border-primary {
+    border-color: var(--primary);
+}
+
+@utility border-primary-foreground {
+    border-color: var(--primary-foreground);
+}
+
+@utility border-secondary {
+    border-color: var(--secondary);
+}
+
+@utility border-secondary-foreground {
+    border-color: var(--secondary-foreground);
+}
+
+@utility border-success {
+    border-color: var(--success);
+}
+
+@utility border-success-foreground {
+    border-color: var(--success-foreground);
+}
+
+@utility border-warning {
+    border-color: var(--warning);
+}
+
+@utility border-warning-foreground {
+    border-color: var(--warning-foreground);
+}
+
+@utility border-error {
+    border-color: var(--error);
+}
+
+@utility border-error-foreground {
+    border-color: var(--error-foreground);
+}
+
+@utility border-info {
+    border-color: var(--info);
+}
+
+@utility border-info-foreground {
+    border-color: var(--info-foreground);
+}
+
+@utility border-muted {
+    border-color: var(--muted);
+}
+
+@utility border-muted-foreground {
+    border-color: var(--muted-foreground);
+}
+
+@utility border-accent {
+    border-color: var(--accent);
+}
+
+@utility border-accent-foreground {
+    border-color: var(--accent-foreground);
+}
+
+@utility outline-background {
+    outline-color: var(--background);
+}
+
+@utility outline-foreground {
+    outline-color: var(--foreground);
+}
+
+@utility outline-primary {
+    outline-color: var(--primary);
+}
+
+@utility outline-primary-foreground {
+    outline-color: var(--primary-foreground);
+}
+
+@utility outline-secondary {
+    outline-color: var(--secondary);
+}
+
+@utility outline-secondary-foreground {
+    outline-color: var(--secondary-foreground);
+}
+
+@utility outline-success {
+    outline-color: var(--success);
+}
+
+@utility outline-success-foreground {
+    outline-color: var(--success-foreground);
+}
+
+@utility outline-warning {
+    outline-color: var(--warning);
+}
+
+@utility outline-warning-foreground {
+    outline-color: var(--warning-foreground);
+}
+
+@utility outline-error {
+    outline-color: var(--error);
+}
+
+@utility outline-error-foreground {
+    outline-color: var(--error-foreground);
+}
+
+@utility outline-info {
+    outline-color: var(--info);
+}
+
+@utility outline-info-foreground {
+    outline-color: var(--info-foreground);
+}
+
+@utility outline-muted {
+    outline-color: var(--muted);
+}
+
+@utility outline-muted-foreground {
+    outline-color: var(--muted-foreground);
+}
+
+@utility outline-accent {
+    outline-color: var(--accent);
+}
+
+@utility outline-accent-foreground {
+    outline-color: var(--accent-foreground);
+}
+
+@utility outline-default {
+    outline-color: var(--border);
+}
+
+@layer base {
+    * {
+        border-color: var(--border);
+        --tw-ring-color: var(--ring);
+    }
+
+    button {
+        cursor: pointer;
+    }
+}

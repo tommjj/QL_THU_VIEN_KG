@@ -16,6 +16,8 @@ namespace QL_THU_VIEN_KG
             });
 
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+
+            CreateDefaultAdimAcc.Create();
         }   
     }
 }

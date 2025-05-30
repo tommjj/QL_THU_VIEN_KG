@@ -12,26 +12,21 @@ public partial class Accounts_Login : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        IAuthenticationManager authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
+        
+    }
 
-        var claims = new List<System.Security.Claims.Claim>
+    protected void LoginButton_Click(object sender, EventArgs e)
+    {
+        var pass = Request.Form["password"].ToString(); 
+        var rememberMe = Request.Form["rememberme"] == "on";
+        var username = Request.Form["username"].ToString();
+
+        try
         {
-            new Claim(ClaimTypes.NameIdentifier, "id"),  
-            new Claim(ClaimTypes.Name, "name"),             
-            new Claim(ClaimTypes.Email, "enmail"),              
-            new Claim("FullName", "fullname"), 
-            new Claim(ClaimTypes.Role, "role")
-        };
-
-        var identity = new ClaimsIdentity(claims, "ApplicationCookie");
-
-        authenticationManager.SignIn(
-            new AuthenticationProperties
-            {
-                IsPersistent = false,
-                ExpiresUtc = DateTime.UtcNow.AddMinutes(30) // Set the expiration time for the cookie
-            },
-            identity
-        );
+            Auth.Login(username, pass, rememberMe);
+        }
+        catch (Exception ex) { 
+            ErrLabel.Text = "tài khoản hoặc mật khẩu không đúng!";
+        }
     }
 }

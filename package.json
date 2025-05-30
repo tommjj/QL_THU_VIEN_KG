@@ -1,0 +1,16 @@
+{
+    "name": "ql_thu_vien_kg",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "tailwindcss": "tailwindcss -i .\\QL_THU_VIEN_KG\\Content\\input.css -o .\\QL_THU_VIEN_KG\\Content\\Site.css --watch"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@tailwindcss/cli": "^4.1.8",
+        "tailwindcss": "^4.1.8"
+    }
+}
