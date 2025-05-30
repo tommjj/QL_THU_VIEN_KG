@@ -4,9 +4,9 @@ using System.Linq;
 using System.Web;
 
 /// <summary>
-/// Summary description for createDefaultAdimAcc
+/// Summary description for createDefaultAdminAcc
 /// </summary>
-public static class CreateDefaultAdimAcc
+public static class CreateDefaultAdminAcc
 {
     private static User defultUser = new User
     {
@@ -14,15 +14,11 @@ public static class CreateDefaultAdimAcc
         FullName = "Laplala",
         Username = "laplala",
         Role = Constands.Roles.Admin,
+        PasswordHash = BCrypt.Net.BCrypt.HashPassword("12345678")
     };
-
 
     public static void Create()
     {
-        var pass = "12345678";
-
-        defultUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(pass);
-
         using (var conn = DbConnectionFactory.Instance.CreateConnection())
         {
             var userRepo = new UserRepo(conn);

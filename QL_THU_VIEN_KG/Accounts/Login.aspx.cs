@@ -24,6 +24,8 @@ public partial class Accounts_Login : System.Web.UI.Page
         try
         {
             Auth.Login(username, pass, rememberMe);
+
+            Response.Redirect("~/");
         }
         catch (Exception ex) { 
             ErrLabel.Text = "tài khoản hoặc mật khẩu không đúng!";

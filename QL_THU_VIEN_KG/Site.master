@@ -60,7 +60,7 @@
 
                 <nav class="mt-2 px-2" x-data="{route: ''}" x-init="route = window.location.pathname">
                     <div class="flex flex-col gap-1.5">
-                        <a href="/" :class="route === '/' ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0  hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
+                        <a href="/" :class="route === '/Dashboard/' || route === '/Dashboard/Default' ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0  hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
                             <i data-lucide="layout-dashboard"></i>
                             Dashboard
                         </a>
@@ -76,10 +76,16 @@
             <%-- MAIN CONTAINER --%>
             <main class="flex-1 w-[1px]">
                 <header class="flex items-center justify-between px-4 py-2 bg-white px-4 h-14">
-                    <div>
+                    <div class="flex gap-2">
                         <button x-show="!openSideBar" x-on:click="toggleSideBar()" type="button" class="p-1 cursor-pointer">
                             <i data-lucide="panel-left"></i>
                         </button>
+
+                        <div>
+                            <asp:ContentPlaceHolder ID="Header" runat="server">
+
+                            </asp:ContentPlaceHolder>
+                        </div>
                     </div>
                     <div>
                         <asp:LoginView runat="server" ViewStateMode="Disabled">
@@ -90,7 +96,7 @@
                                 </ul>
                             </AnonymousTemplate>
                             <LoggedInTemplate>
-                                <ul class="flex gap-1">
+                                <ul class="flex gap-1 text-lg">
                                     <li><a runat="server" href="~/Accounts/Manage" title="Manage your account">Hello, <%: Context.User.Identity.GetUserName()  %>!</a></li>
                                     <li>
                                         <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
@@ -100,7 +106,9 @@
                         </asp:LoginView>
                     </div>
                 </header>
+
                 <asp:ContentPlaceHolder ID="MainContent" runat="server">
+
                 </asp:ContentPlaceHolder>
             </main>
         </div>
