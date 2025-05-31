@@ -409,6 +409,16 @@
     outline-color: var(--border);
 }
 
+@utility card-background {
+    background-color: var(--background)
+}
+
+@utility card-foreground {
+    background-color: var(--foreground)
+}
+
+
+
 @layer base {
     * {
         border-color: var(--border);
@@ -419,3 +429,4 @@
         cursor: pointer;
     }
 }
+

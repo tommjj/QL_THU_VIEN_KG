@@ -15,7 +15,7 @@ public class BorrowRecord
     public int UserID { get; set; }
     public DateTime BorrowDate { get; set; }
     public DateTime DueDate { get; set; }
-    public DateTime ReturnDate { get; set; }
+    public DateTime? ReturnDate { get; set; }
     public string Status { get; set; }
 
     public List<BorrowDetail> Details { get; set; } // one to many

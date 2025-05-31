@@ -14,7 +14,6 @@ public class DbConnectionFactory
 
     public DbConnectionFactory()
     {
-        
     }
 
     public static DbConnectionFactory Instance => _instance;

@@ -18,9 +18,9 @@ public static class Errors
 
 public class InvalidDataException : Exception
 {
-    public String[] Messages { get; set; }
+    public string[] Messages { get; set; }
     
-    public InvalidDataException(String[] messages) : base("Invalid data")
+    public InvalidDataException(string[] messages) : base("Invalid data")
     {
         this.Messages = messages;
     }
