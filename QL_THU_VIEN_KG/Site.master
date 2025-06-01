@@ -20,7 +20,7 @@
 
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
+<body class="relative max-w-screen">
     <form runat="server">
         <asp:ScriptManager runat="server">
             <Scripts>
@@ -44,60 +44,62 @@
         <div x-data="{ openSideBar: true, toggleSideBar() { this.openSideBar = !this.openSideBar } }" class="flex max-w-screen min-h-screen">
             <%-- SIDE NAV --%>
             <aside x-show="openSideBar" class="border-r-1 border-gray-200" style="width: 260px;">
-                <div class="flex items-center justify-between px-4 h-14">
-                    <div class="flex items-center gap-1.5 text-blue-600 text-xl">
-                        <i data-lucide="book" class="text-2xl"></i>
-                        <span class="text-xl font-bold text-gray-900">THU VIEN
-                        </span>
+                <div class="sticky top-0">
+                    <div class="flex items-center justify-between px-4 h-14">
+                        <div class="flex items-center gap-1.5 text-blue-600 text-xl">
+                            <i data-lucide="book" class="text-2xl"></i>
+                            <span class="text-xl font-bold text-gray-900">THU VIEN
+                            </span>
+                        </div>
+
+                        <div>
+                            <button x-on:click="toggleSideBar()" type="button" class="p-1 cursor-pointer">
+                                <i data-lucide="panel-left"></i>
+                            </button>
+                        </div>
                     </div>
 
-                    <div>
-                        <button x-on:click="toggleSideBar()" type="button" class="p-1 cursor-pointer">
-                            <i data-lucide="panel-left"></i>
-                        </button>
-                    </div>
-                </div>
+                    <nav class="mt-2 px-2" x-data="{route: ''}" x-init="route = window.location.pathname">
+                        <div class="flex flex-col gap-1.5">
+                            <a href="/" :class="route === '/Dashboard/' || route === '/Dashboard/Default' ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0  hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
+                                <i data-lucide="layout-dashboard"></i>
+                                Dashboard
+                            </a>
 
-                <nav class="mt-2 px-2" x-data="{route: ''}" x-init="route = window.location.pathname">
-                    <div class="flex flex-col gap-1.5">
-                        <a href="/" :class="route === '/Dashboard/' || route === '/Dashboard/Default' ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0  hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
-                            <i data-lucide="layout-dashboard"></i>
-                            Dashboard
-                        </a>
+                            <a href="/Dashboard/Books" :class="route.startsWith('/Dashboard/Books') ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0 [&_svg]:opacity-80 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
+                                <i class="text-2xl" data-lucide="book-copy"></i>
+                                Quản Lý Sách 
+                            </a>
 
-                        <a href="/Books" :class="route.startsWith('/Books') ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0 [&_svg]:opacity-80 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
-                            <i class="text-2xl" data-lucide="book-copy"></i>
-                            Quản Lý Sách 
-                        </a>
+                            <a href="/Dashboard/Genres" :class="route.startsWith('/Dashboard/Genres') ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0 [&_svg]:opacity-80 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
+                                <i class="text-2xl" data-lucide="book-marked"></i>
+                                Thể Loại
+                            </a>
 
-                        <a href="/Genres" :class="route.startsWith('/Genres') ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0 [&_svg]:opacity-80 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
-                            <i class="text-2xl" data-lucide="book-marked"></i>
-                            Thể Loại
-                        </a>
+                            <a href="/Dashboard/Members" :class="route.startsWith('/Dashboard/Members') ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0 [&_svg]:opacity-80 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
+                                <i class="text-2xl" data-lucide="users"></i>
+                                Thành Viên
+                            </a>
 
-                        <a href="/Members" :class="route.startsWith('/Members') ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0 [&_svg]:opacity-80 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
-                            <i class="text-2xl" data-lucide="users"></i>
-                            Thành Viên
-                        </a>
-
-                        <a href="/Borrows" :class="route.startsWith('/Borrows') ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0 [&_svg]:opacity-80 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
-                            <i class="text-2xl" data-lucide="book-open"></i>
-                            Mượn Trả
-                        </a>
+                            <a href="/Dashboard/Borrows" :class="route.startsWith('/Dashboard/Borrows') ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0 [&_svg]:opacity-80 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
+                                <i class="text-2xl" data-lucide="book-open"></i>
+                                Mượn Trả
+                            </a>
                     
-                        <a x-show="<%: Context.User.IsInRole(Constands.Roles.Admin).ToString().ToLower()%>"" href="/Users" :class="route.startsWith('/Users') ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0 [&_svg]:opacity-80 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
-                            <i class="text-2xl" data-lucide="user-cog"></i>
-                            Nhân Viên 
-                        </a>
-                    </div>
-                </nav>
+                            <a x-show="<%: Context.User.IsInRole(Constands.Roles.Admin).ToString().ToLower()%>"" href="/Dashboard/Users" :class="route.startsWith('/Dashboard/Users') ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0 [&_svg]:opacity-80 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
+                                <i class="text-2xl" data-lucide="user-cog"></i>
+                                Nhân Viên 
+                            </a>
+                        </div>
+                    </nav>
+                </div>
             </aside>
 
             <%-- MAIN CONTAINER --%>
             <main class="flex-1 w-[1px]">
 
                 <%-- HEADER CONTAINER --%>
-                <header class="flex items-center justify-between px-4 py-2 bg-white px-4 h-14">
+                <header class="sticky top-0 flex items-center justify-between px-4 py-2 bg-white px-4 h-14 z-10">
                     <div class="flex gap-2">
                         <button x-show="!openSideBar" x-on:click="toggleSideBar()" type="button" class="p-1 cursor-pointer">
                             <i data-lucide="panel-left"></i>

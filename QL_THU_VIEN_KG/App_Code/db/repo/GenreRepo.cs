@@ -20,8 +20,8 @@ public class GenreRepo
 
     public Genre CreateGenre(Genre genre)
     {
-        string query = "INSERT INTO Genres (Name)" +
-                       "VALUES (@Name)" + "" +
+        string query = "INSERT INTO Genres (Name, Description)" +
+                       "VALUES (@Name, @Description)" + "" +
                        "SELECT CAST(SCOPE_IDENTITY() as int)";
 
         var id = conn.QuerySingle<int>(query, genre);
