@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="DeleteGenre.ascx.cs" Inherits="Dashboard_Genres_DeleteGenre" %>
 
-<div x-init="$el.classList.remove('hidden')" x-show="$store.deleteGenre.isShow" x-on:click="$store.deleteGenre.cancel()" class="hidden fixed inset-0 z-50 bg-black/80" data-aria-hidden="true" aria-hidden="true" style="pointer-events: auto;"></div>
+<div  x-transition.opacity x-init="$el.classList.remove('hidden')" x-show="$store.deleteGenre.isShow" x-on:click="$store.deleteGenre.cancel()" class="hidden fixed inset-0 z-50 bg-black/80" data-aria-hidden="true" aria-hidden="true" style="pointer-events: auto;"></div>
 
 <div x-transition x-init="$el.classList.remove('hidden')" x-show="$store.deleteGenre.isShow && $store.deleteGenre.canDelete" role="dialog" class="hidden fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200  sm:rounded-lg sm:max-w-[500px]" tabindex="-1" style="pointer-events: auto;">
     <div class="flex flex-col space-y-1.5 text-center sm:text-left">

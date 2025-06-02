@@ -55,7 +55,7 @@ public static class Auth
         authenticationManager.SignIn(
            new AuthenticationProperties
            {
-               IsPersistent = false,
+               IsPersistent = isPersistent,
                ExpiresUtc = DateTime.UtcNow.AddHours(12)
            },
            identity

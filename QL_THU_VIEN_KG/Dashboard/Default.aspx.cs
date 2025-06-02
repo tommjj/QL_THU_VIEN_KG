@@ -35,7 +35,7 @@ public partial class Dashboard_Default : System.Web.UI.Page
     {
         using (var conn = DbConnectionFactory.Instance.CreateConnection())
         {
-            var sql = "SELECT COUNT(*) FROM Members";
+            var sql = "SELECT COUNT(*) FROM Members WHERE DeletedAt IS NULL";
             return conn.Query<int>(sql).FirstOrDefault();
         }
     }
@@ -44,7 +44,7 @@ public partial class Dashboard_Default : System.Web.UI.Page
     {
         using (var conn = DbConnectionFactory.Instance.CreateConnection())
         {
-            var sql = "SELECT COUNT(*) FROM Books";
+            var sql = "SELECT COUNT(*) FROM Books WHERE DeletedAt IS NULL";
             return conn.Query<int>(sql).FirstOrDefault();
         }
     }
@@ -53,7 +53,7 @@ public partial class Dashboard_Default : System.Web.UI.Page
     {
         using (var conn = DbConnectionFactory.Instance.CreateConnection())
         {
-            var sql = "SELECT COALESCE(SUM(TotalCopies), 0) FROM Books";
+            var sql = "SELECT COALESCE(SUM(TotalCopies), 0) FROM Books WHERE DeletedAt IS NULL";
             return conn.Query<int>(sql).FirstOrDefault();
         }
     }

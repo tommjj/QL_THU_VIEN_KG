@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="UpdateGenre.ascx.cs" Inherits="Dashboard_Genres_UpdateGenre" %>
 
-<div x-init="$el.classList.remove('hidden')" x-show="$store.updatdeGenre.isShow" x-on:click="$store.updatdeGenre.cancel()" class="hidden fixed inset-0 z-50 bg-black/80" data-aria-hidden="true" aria-hidden="true" style="pointer-events: auto;"></div>
+<div  x-transition.opacity x-init="$el.classList.remove('hidden')" x-show="$store.updatdeGenre.isShow" x-on:click="$store.updatdeGenre.cancel()" class="hidden fixed inset-0 z-50 bg-black/80" data-aria-hidden="true" aria-hidden="true" style="pointer-events: auto;"></div>
 
 <div x-transition x-init="$el.classList.remove('hidden')" x-show="$store.updatdeGenre.isShow" role="dialog" class="hidden fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200  sm:rounded-lg sm:max-w-[500px]" tabindex="-1" style="pointer-events: auto;">
     <asp:UpdatePanel ID="UpdatePanel1" runat="server" >
