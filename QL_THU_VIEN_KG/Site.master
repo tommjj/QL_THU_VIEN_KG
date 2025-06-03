@@ -20,7 +20,7 @@
 
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="relative max-w-screen">
+<body class="relative max-w-screen ">
     <form runat="server">
         <asp:ScriptManager runat="server">
             <Scripts>
@@ -61,33 +61,33 @@
 
                     <nav class="mt-2 px-2" x-data="{route: ''}" x-init="route = window.location.pathname">
                         <div class="flex flex-col gap-1.5">
-                            <a href="/" :class="route === '/Dashboard/' || route === '/Dashboard/Default' ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0  hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
-                                <i data-lucide="layout-dashboard"></i>
+                            <a href="/" :class="route === '/Dashboard/' || route === '/Dashboard/Default' ? 'bg-primary text-primary-foreground' : ' [&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none  hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
+                                <i class="w-5 h-5" data-lucide="layout-dashboard"></i>
                                 Dashboard
                             </a>
 
-                            <a href="/Dashboard/Books" :class="route.startsWith('/Dashboard/Books') ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0 [&_svg]:opacity-80 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
-                                <i class="text-2xl" data-lucide="book-copy"></i>
+                            <a href="/Dashboard/Books" :class="route.startsWith('/Dashboard/Books') ? 'bg-primary text-primary-foreground' : ' [&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none  hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
+                                <i class="text-2xl w-5 h-5" data-lucide="book-copy"></i>
                                 Quản Lý Sách 
                             </a>
 
-                            <a href="/Dashboard/Genres" :class="route.startsWith('/Dashboard/Genres') ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0 [&_svg]:opacity-80 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
-                                <i class="text-2xl" data-lucide="book-marked"></i>
+                            <a href="/Dashboard/Genres" :class="route.startsWith('/Dashboard/Genres') ? 'bg-primary text-primary-foreground' : ' [&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none  hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
+                                <i class="text-2xl w-5 h-5" data-lucide="book-marked"></i>
                                 Thể Loại
                             </a>
 
-                            <a href="/Dashboard/Members" :class="route.startsWith('/Dashboard/Members') ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0 [&_svg]:opacity-80 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
-                                <i class="text-2xl" data-lucide="users"></i>
+                            <a href="/Dashboard/Members" :class="route.startsWith('/Dashboard/Members') ? 'bg-primary text-primary-foreground' : ' [&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none  hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
+                                <i class="text-2xl w-5 h-5" data-lucide="users"></i>
                                 Thành Viên
                             </a>
 
-                            <a href="/Dashboard/Borrows" :class="route.startsWith('/Dashboard/Borrows') ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0 [&_svg]:opacity-80 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
-                                <i class="text-2xl" data-lucide="book-open"></i>
+                            <a href="/Dashboard/Borrows" :class="route.startsWith('/Dashboard/Borrows') ? 'bg-primary text-primary-foreground' : ' [&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none  hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
+                                <i class="text-2xl w-5 h-5" data-lucide="book-open"></i>
                                 Mượn Trả
                             </a>
                     
-                            <a x-show="<%: Context.User.IsInRole(Constands.Roles.Admin).ToString().ToLower()%>"" href="/Dashboard/Users" :class="route.startsWith('/Dashboard/Users') ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0 [&_svg]:opacity-80 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
-                                <i class="text-2xl" data-lucide="user-cog"></i>
+                            <a x-show="<%: Context.User.IsInRole(Constands.Roles.Admin).ToString().ToLower()%>"" href="/Dashboard/Users" :class="route.startsWith('/Dashboard/Users') ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none  [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
+                                <i class="text-2xl w-5 h-5" data-lucide="user-cog"></i>
                                 Nhân Viên 
                             </a>
                         </div>

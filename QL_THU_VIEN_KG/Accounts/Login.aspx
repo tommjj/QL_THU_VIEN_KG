@@ -42,7 +42,7 @@
         <div>
             <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
                 <div class="w-full max-w-md">
-                    <div class="rounded-lg border bg-card text-card-foreground shadow-lg bg-white" data-v0-t="card">
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-lg bg-white">
                         <div class="flex flex-col p-6 space-y-1">
                             <h3 class="tracking-tight text-2xl font-bold text-center">Đăng nhập</h3>
                             <p class="text-sm text-muted-foreground text-center">Nhập thông tin đăng nhập để truy cập hệ thống

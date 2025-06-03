@@ -18,18 +18,11 @@ public partial class Dashboard_Members_Default : System.Web.UI.Page
 
     private void LoadMembers()
     {
-        var q = Request.QueryString.Get("q");
-        if (q == null)
-        {
-            q = "";
-        }
+        var q = Request.QueryString.Get("q") ?? string.Empty;
         var pageStr = Request.QueryString.Get("page");
-        int page;
-        if (!int.TryParse(pageStr, out page))
+        int page = 1;
+        if (!int.TryParse(pageStr, out page) || page < 1)
         {
-            page = 1;
-        }
-        if (page < 1) { 
             page = 1;
         }
 
@@ -87,11 +80,22 @@ public partial class Dashboard_Members_Default : System.Web.UI.Page
     {
         using (var conn = DbConnectionFactory.Instance.CreateConnection())
         {
-            var sql = @"
+            var builder = new SqlBuilder();
+
+            var template = builder.AddTemplate(@"
                 SELECT COUNT(*)
                 FROM Members m
-                WHERE (m.FullName COLLATE Latin1_General_CI_AI LIKE @Keyword OR m.Email COLLATE Latin1_General_CI_AI LIKE @Keyword OR m.Phone LIKE @Keyword) AND m.DeletedAt IS NULL";
-            return conn.QueryFirstOrDefault<int>(sql, new { Keyword = $"%{q}%" });
+                /**where**/");
+
+            if (q.Trim().Length > 0)
+            {
+                builder.Where("(m.FullName COLLATE Latin1_General_CI_AI LIKE @Keyword OR m.Email COLLATE Latin1_General_CI_AI LIKE @Keyword OR m.Phone LIKE @Keyword) AND m.DeletedAt IS NULL", new { Keyword = $"%{q}%" });
+            } else
+            {
+                builder.Where("m.DeletedAt IS NULL");
+            }
+                
+            return conn.QueryFirstOrDefault<int>(template.RawSql, template.Parameters);
         }
     }
 }

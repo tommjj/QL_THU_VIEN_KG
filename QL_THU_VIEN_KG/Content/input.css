@@ -89,11 +89,11 @@
     background-color: var(--warning-foreground);
 }
 
-@utility bg-error {
+@utility bg-destructive {
     background-color: var(--error);
 }
 
-@utility bg-error-foreground {
+@utility bg-destructive-foreground {
     background-color: var(--error-foreground);
 }
 
@@ -145,11 +145,11 @@
     color: var(--warning-foreground);
 }
 
-@utility text-error {
+@utility text-destructive {
     color: var(--error);
 }
 
-@utility text-error-foreground {
+@utility text-destructive-foreground {
     color: var(--error-foreground);
 }
 
@@ -177,7 +177,7 @@
     border-color: var(--warning);
 }
 
-@utility border-error {
+@utility border-destructive {
     border-color: var(--error);
 }
 
@@ -201,7 +201,7 @@
     --tw-ring-color: var(--warning);
 }
 
-@utility ring-error {
+@utility ring-destructive {
     --tw-ring-color: var(--error);
 }
 
@@ -221,7 +221,7 @@
     fill: var(--warning);
 }
 
-@utility fill-error {
+@utility fill-destructive {
     fill: var(--error);
 }
 
@@ -241,7 +241,7 @@
     stroke: var(--warning);
 }
 
-@utility stroke-error {
+@utility stroke-destructive {
     stroke: var(--error);
 }
 
@@ -301,12 +301,8 @@
     border-color: var(--warning-foreground);
 }
 
-@utility border-error {
+@utility border-destructive {
     border-color: var(--error);
-}
-
-@utility border-error-foreground {
-    border-color: var(--error-foreground);
 }
 
 @utility border-info {
@@ -423,6 +419,11 @@
     * {
         border-color: var(--border);
         --tw-ring-color: var(--ring);
+    }
+
+    body {
+        background-color: var(--background);
+        color: var(--foreground);
     }
 
     button {
