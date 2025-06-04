@@ -68,17 +68,23 @@ public partial class Dashboard_Books_Edit : System.Web.UI.Page
 
     protected void SaveButton_Click(object sender, EventArgs e)
     {
-        var currBook = LoadBook();
-
         var imageName = SaveImage();
        
         using (var conn = DbConnectionFactory.Instance.CreateConnection())
         {
             var sql = @"UPDATE Books 
                         SET Title = @Title, Author = @Author, Description = @Description, 
-                            ISBN = @ISBN, Publisher = @Publisher, PublishedYear = @PublishedYear, 
-                            GenreID = @GenreID, AvailableCopies = AvailableCopies + @Num, TotalCopies = TotalCopies + @Num, CoverImage = @CoverImage
-                        WHERE ID = @ID AND DeletedAt IS NULL";
+                        ISBN = @ISBN, Publisher = @Publisher, PublishedYear = @PublishedYear, 
+                        GenreID = @GenreID, 
+                        AvailableCopies = @Num, TotalCopies = TotalCopies + (@Num - AvailableCopies)";
+
+            if (imageName != null)
+            {
+                sql += ", CoverImage = @CoverImage"; // Only update CoverImage if a new image is uploaded
+            }
+
+            sql += " WHERE ID = @ID AND DeletedAt IS NULL"; // Added where statement to ensure we only update existing books
+
             try
             {
                 conn.Execute(sql, new
@@ -91,9 +97,9 @@ public partial class Dashboard_Books_Edit : System.Web.UI.Page
                     Publisher = UPublisher.Text,
                     PublishedYear = int.Parse(UYear.Text),
                     GenreID = int.Parse(UGenreSelect.SelectedValue),
-                    CoverImage = imageName ?? currBook.CoverImage,
+                    CoverImage = imageName,
 
-                    Num = int.Parse(UQuantity.Text) - currBook.AvailableCopies,
+                    Num = int.Parse(UQuantity.Text),
                 });
                 Response.Redirect("~/Dashboard/Books");
             }
