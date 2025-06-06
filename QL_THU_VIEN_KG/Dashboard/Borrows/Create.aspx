@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="Create.aspx.cs" Inherits="Dashboard_Borrows_Create" %>
 
 <%@ Register Src="~/Dashboard/Borrows/MemberSelector.ascx" TagPrefix="uc" TagName="MemberSelector" %>
+<%@ Register Src="~/Dashboard/Borrows/BookSelector.ascx" TagPrefix="uc" TagName="BookSelector" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="Server">
     <div class="flex items-center">
@@ -14,6 +15,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="Server">
 
     <uc:MemberSelector runat="server" ID="MemberSelector" />
+    <uc:BookSelector runat="server" ID="BookSelector" />
 
     <div class="space-y-8 p-4">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -22,19 +24,21 @@
                     <div class="flex flex-col space-y-1.5 p-6">
                         <h3 class="text-2xl font-semibold leading-none tracking-tight">Thông tin người mượn</h3>
                         <p class="text-sm text-muted-foreground">Chọn thành viên mượn sách</p>
+                        <asp:RequiredFieldValidator ControlToValidate="MemberID" CssClass="text-sm text-destructive" Display="Dynamic" runat="server" ID="RequiredFieldValidator1" Text="Thành viên không được để tróng."></asp:RequiredFieldValidator>
                     </div>
                     <div class="p-6 pt-0">
                         <div class="space-y-4">
+                            <asp:TextBox aria-hidden="true" CssClass="hidden" runat="server" ID="MemberID" ></asp:TextBox>
+
                             <button @click="$store.createBorrow.toggleMemberSelector()" x-show="$store.createBorrow.member === null" type="button" class="items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground px-4 py-2 w-full h-20 border-dashed flex flex-col">
                                 <i class="h-6 w-6 mb-2" data-lucide="user"></i>
                                 <span>Chọn thành viên</span>
                             </button>
-
                             <div x-show="$store.createBorrow.member !== null" class="flex items-center justify-between border rounded-lg p-4">
                                 <div class="flex items-center space-x-4">
                                     <div>
-                                        <div class="font-medium" x-text="$store.createBorrow.member.name">Phạm Thị Dung</div>
-                                        <div class="text-sm text-muted-foreground" x-text="$store.createBorrow.member.email">dung.pham@email.com</div>
+                                        <div class="font-medium" x-text="$store.createBorrow.member !== null && $store.createBorrow.member.name">Phạm Thị Dung</div>
+                                        <div class="text-sm text-muted-foreground" x-text="$store.createBorrow.member !== null && $store.createBorrow.member.email"></div>
                                     </div>
                                 </div>
                                 <div class="flex items-center space-x-2">
@@ -51,6 +55,7 @@
                         <div>
                             <h3 class="text-2xl font-semibold leading-none tracking-tight">Danh sách sách mượn</h3>
                             <p class="text-sm text-muted-foreground">Chọn sách và số lượng muốn mượn</p>
+                            <asp:RequiredFieldValidator ControlToValidate="SelectedBookCount" CssClass="text-sm text-destructive" Display="Dynamic" runat="server" ID="RequiredFieldValidator2" Text="Sách không được để tróng."></asp:RequiredFieldValidator>
                         </div>
                         <button @click="$store.createBorrow.toggleBooksSelecetor()" type="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
                             <i  class="h-4 w-4 mr-2" data-lucide="plus"></i>
@@ -59,6 +64,8 @@
                     </div>
                     <div class="p-6 pt-0">
                         <div class="relative w-full overflow-auto">
+                            <asp:TextBox aria-hidden="true" CssClass="hidden" runat="server" ID="SelectedBookCount" ></asp:TextBox>
+
                             <div x-show="$store.createBorrow.books === null || $store.createBorrow.books.length === 0" class="text-center py-8">
                                 <i class="h-12 w-12 mx-auto text-gray-300" data-lucide="book"></i>
                                 <h3 class="mt-2 text-sm font-medium text-gray-900">Chưa có sách nào được chọn</h3>
@@ -105,7 +112,7 @@
                                               </td>
                                               <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0" x-text="book.author"></td>
                                               <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                  <div x-text="book.genreName" class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground">
+                                                  <div x-text="book.genreName" class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground text-nowrap">
                                                   </div>
                                               </td>
                                               <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
@@ -131,28 +138,30 @@
                         </div>
                     </div>
                 </div>
-                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
                     <div class="flex flex-col space-y-1.5 p-6">
                         <h3 class="text-2xl font-semibold leading-none tracking-tight">Thông tin mượn trả</h3>
+                        <asp:RangeValidator CssClass="text-sm text-destructive" MaximumValue="2000000000" MinimumValue="1" Type="Integer" Text="ngày trả sách phải lớn hơn ngày mượn sách." ControlToValidate="BorrowDay" ID="RangeValidator1" runat="server" Display="Dynamic"></asp:RangeValidator>
                     </div>
                     <div class="p-6 pt-0">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <asp:TextBox runat="server" ID="BorrowDay" aria-hidden="true" TextMode="Number" CssClass="hidden"></asp:TextBox>
                             <div class="space-y-2">
-                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="borrowDate">
+                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="BorrowDate">
                                     Ngày mượn 
                                 </label>
                                 <div class="relative w-full">
                                     <i class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" data-lucide="calendar"></i>
-                                    <input class="flex h-10  min-w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" id="borrowDate" required="" type="date" value="2025-06-04">
+                                    <asp:TextBox TextMode="Date" runat="server" class="flex h-10  min-w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" ID="BorrowDate" ClientIDMode="Static"/>
                                 </div>
                             </div>
                             <div class="space-y-2">
-                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="dueDate">
+                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="DueDate">
                                     Ngày hẹn trả 
                                 </label>
                                 <div class="relative w-full">
                                     <i class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" data-lucide="calendar"></i>
-                                    <input class="flex h-10 min-w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" id="dueDate" required="" type="date" value="2025-07-02">
+                                    <asp:TextBox TextMode="Date" runat="server" class="flex h-10 min-w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" ID="DueDate" ClientIDMode="Static"/>
                                 </div>
                             </div>
                         </div>
@@ -169,7 +178,7 @@
                         <div class="space-y-4">
                             <div>
                                 <div class="text-sm text-muted-foreground">Người mượn</div>
-                                <div class="font-medium" x-show="$store.createBorrow.member" x-text="$store.createBorrow.member.name"></div>
+                                <div class="font-medium" x-show="$store.createBorrow.member" x-text="$store.createBorrow.member !== null && $store.createBorrow.member.name"></div>
                             </div>
                             <div data-orientation="horizontal" role="none" class="shrink-0 bg-border h-[1px] w-full"></div>
                             <div>
@@ -183,15 +192,15 @@
                             <div data-orientation="horizontal" role="none" class="shrink-0 bg-border h-[1px] w-full"></div>
                             <div>
                                 <div class="text-sm text-muted-foreground">Thời gian mượn</div>
-                                <div class="font-medium">28 ngày</div>
+                                <div class="font-medium" x-text="$store.createBorrow.borrowDay + ' ngày'"></div>
                             </div>
                             <div>
                                 <div class="text-sm text-muted-foreground">Ngày mượn</div>
-                                <div class="font-medium">2025-06-04</div>
+                                <div class="font-medium" x-text="$store.createBorrow.borrowDate"></div>
                             </div>
                             <div>
                                 <div class="text-sm text-muted-foreground">Ngày hẹn trả</div>
-                                <div class="font-medium">2025-07-02</div>
+                                <div class="font-medium" x-text="$store.createBorrow.dueDate"></div>
                             </div>
                         </div>
                     </div>
@@ -244,16 +253,6 @@
                 },
 
                 books: [
-                    {
-                        id: 1,
-                        title: "Lao hac",
-                        isbn: "987-123456789",
-                        author: "author name",
-                        genreName: "genre name",
-                        coverImage: "15cc7d90-6b44-4820-984f-422b2fc2a2eb.jpg",
-                        quantity: 1,
-                        maxQuantity: 10,
-                    }
                 ],
 
                 addBook(id, title, isbn, author, coverImage, genreName, quantity, maxQuantity) {
@@ -299,10 +298,27 @@
                     this.isMemberSelectorOpen = ! this.isMemberSelectorOpen;
                 },
 
-                isBooksSelecetorOpen: false,
+                isBotoggleBooksSelecetoroksSelecetorOpen: false,
                 toggleBooksSelecetor()  {
                     this.isBooksSelecetorOpen = !this.isBooksSelecetorOpen;
                 },
+
+                dueDate: null,
+                borrowDate: new Date().toISOString().split('T')[0],
+
+                get borrowDay() {
+                    if (!this.dueDate || !this.borrowDate) {
+                        return 0;
+                    }
+
+                    const borrow = new Date(this.borrowDate);
+                    const due = new Date(this.dueDate);
+
+                    const diffTime = due - borrow;
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                    return diffDays;
+                }
             })
         })
     </script>

@@ -64,7 +64,7 @@
                                             <p class="text-sm font-medium"><%# Eval("MemberName") %></p>
                                             <p class="text-xs text-muted-foreground">Mượn: <%# Eval("BorrowDate", "{0:dd/MM/yyyy}") %> | Hạn:  <%# Eval("DueDate", "{0:dd/MM/yyyy}") %></p>
                                         </div>
-                                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80"><%# Constands.BorrowStatus.ToVietNamese(Eval("Status", "{0}")) %></div>
+                                        <div x-bind:class="'<%# Eval("Status") %>' === '<%: Constands.BorrowStatus.Overdue %>' ? 'bg-destructive text-destructive-foreground hover:bg-destructive/80' : 'bg-primary text-primary-foreground hover:bg-primary/80'" class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent"><%# Constands.BorrowStatus.ToVietNamese(Eval("Status", "{0}")) %></div>
                                     </div>
                                 </ItemTemplate>
                             </asp:Repeater>

@@ -23,7 +23,6 @@ public class BorrowRecord
 
 public class BorrowDetail
 {
-    public int ID { get; set; }
     public int BorrowID { get; set; }
     public int BookID { get; set; }
     public int Quantity { get; set; }

@@ -1,16 +1,20 @@
 ﻿<%@ Page Title="Quản lý mượn trả" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="Dashboard_Borrows_Default" %>
 
+<%@ Register Src="~/Dashboard/Borrows/ReturnBook.ascx" TagPrefix="uc" TagName="ReturnBook" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="Header" runat="Server">
     <h1 class="font-bold text-2xl">Quản lý mượn trả</h1>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="Server">
-    <div class="flex-1 p-6">
+    <uc:ReturnBook runat="server" ID="ReturnBook"/>
+
+    <div x-data="{True: true, False: false}" class="flex-1 p-6">
         <div class="space-y-6">
             <div class="flex flex-col sm:flex-row gap-4 justify-between">
-                <div class="relative flex-1 max-w-md">
+                <div x-data="searchBox" class="relative flex-1 max-w-md">
                     <i class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" data-lucide="search"></i>
-                    <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" placeholder="Tìm kiếm theo thành viên, sách, ISBN..." value="">
+                    <input @input="updateQuery" x-model="query"  x-init="query !== '' && $el.focus()" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" placeholder="Tìm kiếm theo thành viên" value="">
                 </div>
                 <a href="Create.aspx" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-«r12»" data-state="closed">
                     <i class="h-4 w-4 mr-2" data-lucide="plus"></i>
@@ -23,7 +27,7 @@
                         <h3 class="tracking-tight text-sm font-medium">Đang mượn</h3>
                     </div>
                     <div class="p-6 pt-0">
-                        <div class="text-2xl font-bold">67</div>
+                        <div class="text-2xl font-bold" x-text="<%: GetBorrowedCount() %>""></div>
                         <p class="text-xs text-muted-foreground">Sách đang được mượn</p>
                     </div>
                 </div>
@@ -32,7 +36,7 @@
                         <h3 class="tracking-tight text-sm font-medium">Quá hạn</h3>
                     </div>
                     <div class="p-6 pt-0">
-                        <div class="text-2xl font-bold text-red-600">10</div>
+                        <div class="text-2xl font-bold text-red-600" x-text="<%: GetOverdueBorrowedCount() %>""></div>
                         <p class="text-xs text-muted-foreground">Cần xử lý ngay</p>
                     </div>
                 </div>
@@ -41,317 +45,82 @@
                         <h3 class="tracking-tight text-sm font-medium">Đã trả</h3>
                     </div>
                     <div class="p-6 pt-0">
-                        <div class="text-2xl font-bold">33</div>
+                        <div class="text-2xl font-bold" x-text="<%: GetReturnedBorrowedCount() %>""></div>
                         <p class="text-xs text-muted-foreground">Trong tháng này</p>
                     </div>
                 </div>
             </div>
             <div class="rounded-lg border bg-card text-card-foreground shadow-sm" >
                 <div class="flex flex-col space-y-1.5 p-6">
-                    <h3 class="text-2xl font-semibold leading-none tracking-tight">Quản lý mượn trả (100)</h3>
+                    <h3 class="text-2xl font-semibold leading-none tracking-tight">Quản lý mượn trả (<asp:Label ID="TotalBorrow" runat="server"></asp:Label>)</h3>
                 </div>
                 <div class="p-6 pt-0">
                     <div dir="ltr" data-orientation="horizontal" class="w-full">
-                        <div role="tablist" aria-orientation="horizontal" class="h-10 items-center justify-center rounded-md bg-gray-100/80 p-1 text-muted-foreground grid w-full grid-cols-4" tabindex="0">
-                            <button type="button" role="tab" aria-selected="true" data-state="inactive"  class="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm">Tất cả (100)</button>
-                            <button type="button" role="tab" aria-selected="false"  data-state="inactive"  class="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm">Đang mượn (67)</button>
-                            <button type="button" role="tab" aria-selected="false"  data-state="active" class="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm" >Quá hạn (10)</button>
-                            <button type="button" role="tab" aria-selected="false" " data-state="inactive" class="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm" >Đã trả (33)</button></div>
                         <div data-state="active" data-orientation="horizontal" role="tabpanel"  tabindex="0" class="ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 mt-4" style="animation-duration: 0s;">
                             <div class="relative w-full overflow-auto">
                                 <table class="w-full caption-bottom text-sm">
                                     <thead class="[&amp;_tr]:border-b">
-                                        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">Thành viên</th>
-                                            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">Sách</th>
-                                            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">Ngày mượn</th>
-                                            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">Hạn trả</th>
-                                            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">Ngày trả</th>
-                                            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">Trạng thái</th>
-                                            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">Thao tác</th>
+                                        <tr class="border-b transition-colors hover:bg-muted/50">
+                                            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">ID</th>
+                                            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Thành viên</th>
+                                            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Tổng sách</th>
+                                            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Ngày mượn</th>
+                                            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Hạn trả</th>
+                                            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Ngày trả</th>
+                                            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Trạng thái</th>
+                                            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Thao tác</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="[&amp;_tr:last-child]:border-0">
-                                        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center space-x-3"><div class="font-medium">Nguyễn Văn An</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div>
-                                                    <div class="font-medium">Lập trình JavaScript</div>
-                                                    <div class="text-sm text-muted-foreground font-mono">978-0123456789</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-01-15</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center gap-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar h-3 w-3">
-                                                        <path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>2024-02-15</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">-</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80">Đang mượn</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex space-x-2">
-                                                    <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw h-3 w-3 mr-1">
-                                                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>Trả sách</button></div>
-                                            </td>
-                                        </tr>
-                                        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center space-x-3"><div class="font-medium">Trần Thị Bình</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div>
-                                                    <div class="font-medium">Thiết kế UI/UX</div>
-                                                    <div class="text-sm text-muted-foreground font-mono">978-0123456790</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-01-10</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center gap-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar h-3 w-3">
-                                                        <path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>2024-02-10</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">-</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80 flex items-center gap-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert h-3 w-3">
-                                                        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>Quá hạn 5 ngày</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex space-x-2">
-                                                    <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw h-3 w-3 mr-1">
-                                                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>Trả sách</button></div>
-                                            </td>
-                                        </tr>
-                                        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center space-x-3"><div class="font-medium">Lê Văn Cường</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div>
-                                                    <div class="font-medium">React và Next.js</div>
-                                                    <div class="text-sm text-muted-foreground font-mono">978-0123456791</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-01-05</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center gap-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar h-3 w-3">
-                                                        <path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>2024-02-05</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-02-03</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">Đã trả</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex space-x-2"></div>
-                                            </td>
-                                        </tr>
-                                        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center space-x-3">
-                                                    <div class="font-medium">Phạm Thị Dung</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div>
-                                                    <div class="font-medium">Python cho người mới</div>
-                                                    <div class="text-sm text-muted-foreground font-mono">978-0123456792</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-01-20</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center gap-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar h-3 w-3">
-                                                        <path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>2024-02-20</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">-</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80" data-v0-t="badge">Đang mượn</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex space-x-2">
-                                                    <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw h-3 w-3 mr-1">
-                                                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>Trả sách</button></div>
-                                            </td>
-                                        </tr>
-                                        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center space-x-3">
-                                                    <div class="font-medium">Thành viên 5</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div>
-                                                    <div class="font-medium">Sách 5</div>
-                                                    <div class="text-sm text-muted-foreground font-mono">978-0000000005</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-01-01</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center gap-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar h-3 w-3">
-                                                        <path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>2024-02-01</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-02-01</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80" data-v0-t="badge">Đã trả</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex space-x-2"></div>
-                                            </td>
-                                        </tr>
-                                        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center space-x-3">
-                                                    <div class="font-medium">Thành viên 6</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div>
-                                                    <div class="font-medium">Sách 6</div>
-                                                    <div class="text-sm text-muted-foreground font-mono">978-0000000006</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-01-02</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center gap-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar h-3 w-3">
-                                                        <path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>2024-02-02</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">-</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80" data-v0-t="badge">Đang mượn</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex space-x-2">
-                                                    <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw h-3 w-3 mr-1">
-                                                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>Trả sách</button></div>
-                                            </td>
-                                        </tr>
-                                        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center space-x-3">
-                                                    <div class="font-medium">Thành viên 7</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div>
-                                                    <div class="font-medium">Sách 7</div>
-                                                    <div class="text-sm text-muted-foreground font-mono">978-0000000007</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-01-03</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center gap-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar h-3 w-3">
-                                                        <path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>2024-02-03</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">-</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80" data-v0-t="badge">Đang mượn</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex space-x-2">
-                                                    <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw h-3 w-3 mr-1">
-                                                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>Trả sách</button></div>
-                                            </td>
-                                        </tr>
-                                        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center space-x-3">
-                                                    <div class="font-medium">Thành viên 8</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div>
-                                                    <div class="font-medium">Sách 8</div>
-                                                    <div class="text-sm text-muted-foreground font-mono">978-0000000008</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-01-04</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center gap-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar h-3 w-3">
-                                                        <path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>2024-02-04</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-02-04</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80" data-v0-t="badge">Đã trả</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex space-x-2"></div>
-                                            </td>
-                                        </tr>
-                                        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center space-x-3">
-                                                    <div class="font-medium">Thành viên 9</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div>
-                                                    <div class="font-medium">Sách 9</div>
-                                                    <div class="text-sm text-muted-foreground font-mono">978-0000000009</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-01-05</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center gap-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar h-3 w-3">
-                                                        <path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>2024-02-05</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">-</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80" data-v0-t="badge">Đang mượn</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex space-x-2">
-                                                    <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw h-3 w-3 mr-1">
-                                                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>Trả sách</button></div>
-                                            </td>
-                                        </tr>
-                                        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center space-x-3">
-                                                    <div class="font-medium">Thành viên 10</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div>
-                                                    <div class="font-medium">Sách 10</div>
-                                                    <div class="text-sm text-muted-foreground font-mono">978-0000000010</div>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2024-01-06</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex items-center gap-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar h-3 w-3">
-                                                        <path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>2024-02-06</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">-</td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80" data-v0-t="badge">Đang mượn</div>
-                                            </td>
-                                            <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                                <div class="flex space-x-2">
-                                                    <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw h-3 w-3 mr-1">
-                                                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>Trả sách</button></div>
-                                            </td>
-                                        </tr>
+                                    <tbody >
+                                        <asp:Repeater ID="BorrowRepeater" runat="server">
+                                            <ItemTemplate>
+                                                <tr class="border-b transition-colors hover:bg-muted/50">
+                                                    <td class="p-4 align-middle">
+                                                        <div class="flex items-center space-x-3">
+                                                            <div class="font-medium"><%# Eval("ID") %></div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="p-4 align-middle">
+                                                        <div class="space-y-1">
+                                                            <div class="font-medium"><%# Eval("MemberName") %></div>
+                                                            <div class="text-xs">ID: <%# Eval("MemberID") %></div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="p-4 align-middle">
+                                                        <div class="flex items-center gap-1">
+                                                            <div class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-1 border-gray-200/80">
+                                                                <%# Eval("Quantity") %> cuốn
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="p-4 align-middle"><%# Eval("BorrowDate", "{0:dd/MM/yyyy}") %></td>
+                                                    <td class="p-4 align-middle">
+                                                        <div class="flex items-center gap-1">
+                                                            <i class="h-3 w-3" data-lucide="calendar"></i>
+                                                            <%# Eval("DueDate", "{0:dd/MM/yyyy}") %>
+                                                        </div>
+                                                    </td>
+                                                    <td class="p-4 align-middle" ><%# Eval("ReturnDate") == null ? "Chưa trả" : Eval("ReturnDate", "{0:dd/MM/yyyy}") %></td>
+                                                    <td class="p-4 align-middle">
+                                                        <div x-bind:class="'<%# Eval("Status") %>' === '<%: Constands.BorrowStatus.Overdue %>' ? 'bg-destructive text-destructive-foreground hover:bg-destructive/80' : 'bg-primary text-primary-foreground hover:bg-primary/80'" class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent " >
+                                                            <%# Constands.BorrowStatus.ToVietNamese(Eval("Status").ToString()) %>
+                                                        </div>
+                                                    </td>
+                                                    <td class="p-4 align-middle">
+                                                        <div class="flex space-x-2">
+                                                            <a href="Details.aspx?id=<%# Eval("id") %>"  class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
+                                                                <i class="h-3 w-3" data-lucide="eye"></i>
+                                                            </a>
+
+                                                            <button x-show="<%# Eval("ReturnDate") == null %>" @click="$store.returnBook.setReturn(<%# Eval("ID") %>, '<%# Eval("MemberName") %>')" type="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
+                                                                <i class="h-3 w-3 mr-1" data-lucide="rotate-cw"></i>
+                                                                Trả sách
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </ItemTemplate>
+                                        </asp:Repeater>
                                     </tbody>
                                 </table>
                             </div>
@@ -407,8 +176,8 @@
 
         document.addEventListener('alpine:init', () => {
             Alpine.store('pagination', {
-                total: 120,
-                limit: 15,
+                total: <%: LoadBorrowsCount() %>,
+                limit: <%: PageSize %>,
                 current: page,
 
                 canGo(p) {

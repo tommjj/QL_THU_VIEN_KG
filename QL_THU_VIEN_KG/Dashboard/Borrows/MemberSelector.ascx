@@ -40,8 +40,8 @@
                                             <div class="text-sm"><%# Eval("Email") %></div>
                                             <div class="text-sm text-muted-foreground"><%# Eval("Phone") %></div>
                                         </td>
-                                        <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                            <button @click="$store.createBorrow.setMember(<%# Eval("ID") %>, '<%# Eval("FullName") %>', '<%# Eval("Email") %>'); $store.createBorrow.toggleMemberSelector()" type="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
+                                        <td x-bind:class="$store.createBorrow?.member?.id === <%# Eval("ID") %> ? 'hidden' : ''" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                                            <button @click="$store.createBorrow.setMember(<%# Eval("ID") %>, '<%# Eval("FullName") %>', '<%# Eval("Email") %>'); $store.createBorrow.toggleMemberSelector()" type="button" class=" inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
                                                 <i class="h-4 w-4 mr-1" data-lucide="check"></i>
                                                 Chọn
                                             </button>

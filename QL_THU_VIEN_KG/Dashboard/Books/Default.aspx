@@ -31,20 +31,20 @@
                         <table class="w-full caption-bottom text-sm">
                             <thead class="[&amp;_tr]:border-b">
                                 <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                    <th class="h-12 px-2 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">Sách</th>
-                                    <th class="h-12 px-2 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">Tác giả</th>
-                                    <th class="h-12 px-2 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">Thể loại</th>
-                                    <th class="h-12 px-2 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">Năm XB</th>
-                                    <th class="h-12 px-2 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">Số lượng</th>
-                                    <th class="h-12 px-2 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">Trạng thái</th>
-                                    <th class="h-12 px-2 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">Thao tác</th>
+                                    <th class="h-12 px-2 text-left align-middle font-medium text-muted-foreground">Sách</th>
+                                    <th class="h-12 px-2 text-left align-middle font-medium text-muted-foreground">Tác giả</th>
+                                    <th class="h-12 px-2 text-left align-middle font-medium text-muted-foreground">Thể loại</th>
+                                    <th class="h-12 px-2 text-left align-middle font-medium text-muted-foreground">Năm XB</th>
+                                    <th class="h-12 px-2 text-left align-middle font-medium text-muted-foreground">Số lượng</th>
+                                    <th class="h-12 px-2 text-left align-middle font-medium text-muted-foreground">Trạng thái</th>
+                                    <th class="h-12 px-2 text-left align-middle font-medium text-muted-foreground">Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody class="[&amp;_tr:last-child]:border-0">
                                 <asp:Repeater runat="server" ID="BooksRepeater">
                                     <ItemTemplate>
                                         <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                            <td class="p-4 px-2 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                                            <td class="p-4 px-2 align-middle">
                                                 <div class="flex items-center space-x-3">
                                                     <img alt="<%# Eval("Title") %>" class="w-10 h-12 object-cover rounded border" src="/Static/<%# Eval("CoverImage") %>"><div>
                                                         <div class="font-medium"><%# Eval("Title") %></div>
@@ -52,16 +52,16 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="p-4 px-2 align-middle [&amp;:has([role=checkbox])]:pr-0"><%# Eval("Author") %></td>
-                                            <td class="p-4 px-2 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                                            <td class="p-4 px-2 align-middle"><%# Eval("Author") %></td>
+                                            <td class="p-4 px-2 align-middle">
                                                 <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground text-nowrap"><%# Eval("Genre.Name") %></div>
                                             </td>
-                                            <td class="p-4 px-2 align-middle [&amp;:has([role=checkbox])]:pr-0"><%# Eval("PublishedYear") %></td>
-                                            <td class="p-4 px-2 align-middle [&amp;:has([role=checkbox])]:pr-0"><span class="text-sm"><%# Eval("AvailableCopies") %>/<%# Eval("TotalCopies") %></span></td>
-                                            <td class="p-4 px-2 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                                            <td class="p-4 px-2 align-middle"><%# Eval("PublishedYear") %></td>
+                                            <td class="p-4 px-2 align-middle"><span class="text-sm"><%# Eval("AvailableCopies") %>/<%# Eval("TotalCopies") %></span></td>
+                                            <td class="p-4 px-2 align-middle">
                                                 <div x-text="<%# Eval("AvailableCopies") %> === 0 ? 'Hết sách' : 'Có sẵn'" x-bind:class="<%# Eval("AvailableCopies") %> === 0 ? 'bg-destructive text-destructive-foreground hover:bg-destructive/80' : 'bg-primary text-primary-foreground hover:bg-primary/80'" class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent"></div>
                                             </td>
-                                            <td class="p-4 px-2 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                                            <td class="p-4 px-2 align-middle">
                                                 <div class="flex space-x-2">
                                                     <a href="Edit.aspx?id=<%# Eval("ID") %>" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-10 w-10">
                                                         <i class="h-4 w-4" data-lucide="square-pen"></i>

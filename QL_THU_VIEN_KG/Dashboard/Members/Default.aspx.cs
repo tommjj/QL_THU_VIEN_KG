@@ -55,7 +55,7 @@ public partial class Dashboard_Members_Default : System.Web.UI.Page
             var builder = new SqlBuilder();
             var template = builder.AddTemplate(@"
                 SELECT m.ID, m.FullName, m.Email, m.Phone, m.Address, m.CreatedAt, 
-                        COALESCE(SUM(bd.Quantity), 0) AS BorrowedBooksCount
+                        COALESCE(SUM(CASE WHEN br.ReturnDate IS NULL THEN bd.Quantity ELSE 0 END), 0) AS BorrowedBooksCount
                 FROM Members m
                 LEFT JOIN BorrowRecords br ON m.ID = br.MemberID
                 LEFT JOIN BorrowDetails bd ON br.ID = bd.BorrowID
@@ -66,10 +66,10 @@ public partial class Dashboard_Members_Default : System.Web.UI.Page
 
             if (q.Trim().Length > 0)
             {
-                builder.Where("br.ReturnDate IS NULL AND m.DeletedAt IS NULL AND (m.FullName COLLATE Latin1_General_CI_AI LIKE @Keyword OR m.Email COLLATE Latin1_General_CI_AI LIKE @Keyword OR m.Phone LIKE @Keyword)", new { Keyword = $"%{q}%" });
+                builder.Where("m.DeletedAt IS NULL AND (m.FullName COLLATE Latin1_General_CI_AI LIKE @Keyword OR m.Email COLLATE Latin1_General_CI_AI LIKE @Keyword OR m.Phone LIKE @Keyword)", new { Keyword = $"%{q}%" });
             } else
             {
-                builder.Where("br.ReturnDate IS NULL AND m.DeletedAt IS NULL");
+                builder.Where("m.DeletedAt IS NULL");
             }
 
             return conn.Query<MemberWithBorrowedBooks>(template.RawSql, template.Parameters).ToList();
