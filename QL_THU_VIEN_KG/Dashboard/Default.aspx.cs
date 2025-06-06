@@ -109,7 +109,7 @@ public partial class Dashboard_Default : System.Web.UI.Page
             var sql = @"
                 SELECT TOP (@Top) br.ID, br.MemberID, br.UserID, br.DueDate, br.ReturnDate, br.Status, br.BorrowDate, m.FullName as MemberName 
                 FROM BorrowRecords br JOIN Members m ON br.MemberID = m.ID
-                ORDER BY br.BorrowDate DESC";
+                ORDER BY br.ID DESC";
             return conn.Query<BorrowRecordWithMemberName>(sql, new { Top = top }).ToList();
         }
     }

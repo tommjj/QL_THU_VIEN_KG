@@ -12,10 +12,23 @@
     <div x-data="{True: true, False: false}" class="flex-1 p-6">
         <div class="space-y-6">
             <div class="flex flex-col sm:flex-row gap-4 justify-between">
-                <div x-data="searchBox" class="relative flex-1 max-w-md">
-                    <i class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" data-lucide="search"></i>
-                    <input @input="updateQuery" x-model="query"  x-init="query !== '' && $el.focus()" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" placeholder="Tìm kiếm theo thành viên" value="">
+                <div class="flex gap-2 w-1/2">
+                    <div x-data="searchBox" class="relative flex-1 max-w-md">
+                        <i class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" data-lucide="search"></i>
+                        <input @input="updateQuery" x-model="query"  x-init="query !== '' && $el.focus()" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" placeholder="Tìm kiếm theo thành viên" value="">
+                    </div>
+
+                    <div x-data="statusSelector" class="relative ">
+                        <i class="absolute right-3 translate-y-[-50%] top-1/2 size-4" data-lucide="chevron-down"></i>
+                        <select x-model="status" @change="updateStatus" value="all" name="status" class="appearance-none cursor-pointer flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&amp;>span]:line-clamp-1 min-w-[150px]">
+                            <option value="all">Tất cả</option>
+                            <option value="<%: Constands.BorrowStatus.Borrowed %>">Đang mượn</option>
+                            <option value="<%: Constands.BorrowStatus.Overdue %>">Quá hạng</option>
+                            <option value="<%: Constands.BorrowStatus.Returned %>">Đã trả</option>
+                        </select>
+                    </div>
                 </div>
+
                 <a href="Create.aspx" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-«r12»" data-state="closed">
                     <i class="h-4 w-4 mr-2" data-lucide="plus"></i>
                     Cho mượn sách
@@ -229,6 +242,25 @@
                         }
                         window.location.href = url;
                     }, 500)
+                }
+            }));
+
+
+            Alpine.data('statusSelector', () => ({
+                status: new URLSearchParams(window.location.search).get('status') || 'all',
+                updateStatus() {
+                    const url = new URL(window.location.href)
+                    const status = this.status.trim()
+                    if (
+                        status === '<%: Constands.BorrowStatus.Borrowed %>' ||
+                        status === '<%: Constands.BorrowStatus.Overdue %>' ||
+                        status === '<%: Constands.BorrowStatus.Returned %>') {
+                        url.searchParams.set('status', this.status.trim())
+                        url.searchParams.delete('page');
+                    } else {
+                        url.searchParams.delete('status')
+                    }
+                    window.location.href = url;
                 }
             }));
         })

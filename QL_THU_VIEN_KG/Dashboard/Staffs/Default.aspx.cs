@@ -11,6 +11,13 @@ public partial class Dashboard_Staffs_Default : System.Web.UI.Page
     protected int PageSize = 15;
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (!Context.User.IsInRole(Constands.Roles.Admin))
+        {
+            Response.StatusCode = 403;
+            Response.StatusDescription = "Bạn không có quyền truy cập.";
+            Response.End();
+            return;
+        }
         LoadUsers();
     }
 
