@@ -86,7 +86,7 @@
                                 Mượn Trả
                             </a>
                     
-                            <a x-show="<%: Context.User.IsInRole(Constands.Roles.Admin).ToString().ToLower()%>"" href="/Dashboard/Users" :class="route.startsWith('/Dashboard/Users') ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none  [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
+                            <a x-show="<%: Context.User.IsInRole(Constands.Roles.Admin).ToString().ToLower()%>"" href="/Dashboard/Staffs" :class="route.startsWith('/Dashboard/Staffs') ? 'bg-primary text-primary-foreground' : '[&_svg]:opacity-80 hover:bg-gray-100'" class="inline-flex items-center gap-3 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none  [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start cursor-pointer">
                                 <i class="text-2xl w-5 h-5" data-lucide="user-cog"></i>
                                 Nhân Viên 
                             </a>
