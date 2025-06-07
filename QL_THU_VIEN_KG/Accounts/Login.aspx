@@ -68,16 +68,11 @@
                                     </div>
                                 </div>
                                 <div class="flex items-center space-x-2">
-                                    <input type="checkbox" id="rememberme" name="rememberme" class="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground" id="rememberMe"></input>
-                                    <input aria-hidden="true" tabindex="-1" type="checkbox" value="on" style="transform: translateX(-100%); position: absolute; pointer-events: none; opacity: 0; margin: 0px; width: 16px; height: 16px;" />
+                                    <input type="checkbox" id="rememberme" name="rememberme" class="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"></input>
                                     <label class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm font-normal" for="rememberMe">Ghi nhớ đăng nhập</label>
                                 </div>
 
                                 <asp:Button runat="server" ID="LoginButton" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full cursor-pointer" type="submit" Text="Đăng nhập" OnClick="LoginButton_Click"/>
-                                <div class="text-center">
-                                    <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 underline-offset-4 hover:underline h-10 px-4 py-2 text-sm text-blue-600 hover:text-blue-800">Quên mật khẩu?</button>
-                                </div>
-                                
                             </div>
                         </div>
                     </div>

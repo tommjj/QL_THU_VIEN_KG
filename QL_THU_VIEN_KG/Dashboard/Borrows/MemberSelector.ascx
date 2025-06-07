@@ -1,4 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="MemberSelector.ascx.cs" Inherits="Dashboard_Borrows_MemberSelector" %>
+<%@ Register Src="~/Dashboard/Borrows/BookSelector.ascx" TagPrefix="uc1" TagName="BookSelector" %>
+
 
 <div x-show="$store.createBorrow.isMemberSelectorOpen" x-transition.opacity x-on:click="$store.createBorrow.toggleMemberSelector()" x-init="$el.classList.remove('hidden')" class="hidden fixed inset-0 z-50 bg-black/80" style="pointer-events: auto;" data-aria-hidden="true" aria-hidden="true"></div>
 
@@ -13,11 +15,11 @@
             <div class="flex gap-2 w-full">
                 <div class="relative flex-1" x-init="lucide.createIcons()">
                     <i class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" data-lucide="search"></i>
-                    <asp:TextBox runat="server" ID="SearchTextBox" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" placeholder="Tìm kiếm theo tên, email, SĐT..." />
+                    <asp:TextBox AutoCompleteType="Disabled" runat="server" ID="SearchTextBox" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" placeholder="Tìm kiếm theo tên, email, SĐT..." OnTextChanged="SearchTextBox_TextChanged" />
                     <asp:TextBox runat="server" ID="CurrentSearchValue" class="hidden" aria-hidden="true" />
                 </div>
-                <asp:Button runat="server" CssClass="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2" ID="SearchBtn" Text="Tìm" OnClick="SearchBtn_Click" />
             </div>
+            <uc1:BookSelector runat="server" ID="BookSelector" />
             <div class="max-h-[360px] h-[360px] overflow-y-auto">
                 <div class="relative w-full overflow-auto">
                     <table class="w-full caption-bottom text-sm">

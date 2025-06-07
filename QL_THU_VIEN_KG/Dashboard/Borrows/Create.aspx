@@ -14,8 +14,8 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="Server">
 
-    <uc:MemberSelector runat="server" ID="MemberSelector" />
     <uc:BookSelector runat="server" ID="BookSelector" />
+    <uc:MemberSelector runat="server" ID="MemberSelector" />
 
     <div class="space-y-8 p-4">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -24,7 +24,7 @@
                     <div class="flex flex-col space-y-1.5 p-6">
                         <h3 class="text-2xl font-semibold leading-none tracking-tight">Thông tin người mượn</h3>
                         <p class="text-sm text-muted-foreground">Chọn thành viên mượn sách</p>
-                        <asp:RequiredFieldValidator ControlToValidate="MemberID" CssClass="text-sm text-destructive" Display="Dynamic" runat="server" ID="RequiredFieldValidator1" Text="Thành viên không được để tróng."></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ValidationGroup="create-borrow" ControlToValidate="MemberID" CssClass="text-sm text-destructive" Display="Dynamic" runat="server" ID="RequiredFieldValidator1" Text="Thành viên không được để tróng."></asp:RequiredFieldValidator>
                     </div>
                     <div class="p-6 pt-0">
                         <div class="space-y-4">
@@ -55,7 +55,7 @@
                         <div>
                             <h3 class="text-2xl font-semibold leading-none tracking-tight">Danh sách sách mượn</h3>
                             <p class="text-sm text-muted-foreground">Chọn sách và số lượng muốn mượn</p>
-                            <asp:RequiredFieldValidator ControlToValidate="SelectedBookCount" CssClass="text-sm text-destructive" Display="Dynamic" runat="server" ID="RequiredFieldValidator2" Text="Sách không được để tróng."></asp:RequiredFieldValidator>
+                            <asp:RequiredFieldValidator ValidationGroup="create-borrow" ControlToValidate="SelectedBookCount" CssClass="text-sm text-destructive" Display="Dynamic" runat="server" ID="RequiredFieldValidator2" Text="Sách không được để tróng."></asp:RequiredFieldValidator>
                         </div>
                         <button @click="$store.createBorrow.toggleBooksSelecetor()" type="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
                             <i  class="h-4 w-4 mr-2" data-lucide="plus"></i>
@@ -141,13 +141,13 @@
                 <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
                     <div class="flex flex-col space-y-1.5 p-6">
                         <h3 class="text-2xl font-semibold leading-none tracking-tight">Thông tin mượn trả</h3>
-                        <asp:RangeValidator CssClass="text-sm text-destructive" MaximumValue="2000000000" MinimumValue="1" Type="Integer" Text="ngày trả sách phải lớn hơn ngày mượn sách." ControlToValidate="BorrowDay" ID="RangeValidator1" runat="server" Display="Dynamic"></asp:RangeValidator>
+                        <asp:RangeValidator ValidationGroup="create-borrow" CssClass="text-sm text-destructive" MaximumValue="2000000000" MinimumValue="1" Type="Integer" Text="ngày trả sách phải lớn hơn ngày mượn sách." ControlToValidate="BorrowDay" ID="RangeValidator1" runat="server" Display="Dynamic"></asp:RangeValidator>
                     </div>
                     <div class="p-6 pt-0">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <asp:TextBox runat="server" ID="BorrowDay" aria-hidden="true" TextMode="Number" CssClass="hidden"></asp:TextBox>
                             <div class="space-y-2">
-                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="BorrowDate">
+                                <label  class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="BorrowDate">
                                     Ngày mượn 
                                 </label>
                                 <div class="relative w-full">
@@ -205,7 +205,7 @@
                         </div>
                     </div>
                     <div class="flex items-center p-6 pt-0">
-                        <asp:Button runat="server" ID="CreateButton" Text="Tạo phiếu mượn" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full" OnClick="CreateButton_Click">
+                        <asp:Button ValidationGroup="create-borrow" runat="server" ID="CreateButton" Text="Tạo phiếu mượn" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full" OnClick="CreateButton_Click">
                         </asp:Button>
                     </div>
                 </div>
@@ -298,7 +298,7 @@
                     this.isMemberSelectorOpen = ! this.isMemberSelectorOpen;
                 },
 
-                isBotoggleBooksSelecetoroksSelecetorOpen: false,
+                isBooksSelecetorOpen: false,
                 toggleBooksSelecetor()  {
                     this.isBooksSelecetorOpen = !this.isBooksSelecetorOpen;
                 },

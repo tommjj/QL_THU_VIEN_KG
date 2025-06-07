@@ -20,9 +20,8 @@ public static class Auth
         using (var conn = DbConnectionFactory.Instance.CreateConnection())
         {
             var repo = new UserRepo(conn);
-
+            
             user = repo.GetUserByUsername(username);
-
             if (user == null) { 
                 throw Errors.ErrInvalidCredentials;
             }

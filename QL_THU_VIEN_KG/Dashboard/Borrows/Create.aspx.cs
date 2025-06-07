@@ -14,8 +14,6 @@ public partial class Dashboard_Borrows_Create : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        
-
         if (!IsPostBack)
         {
             string today = DateTime.Today.ToString("yyyy-MM-dd");
@@ -25,9 +23,8 @@ public partial class Dashboard_Borrows_Create : System.Web.UI.Page
             BorrowDate.Attributes.Add("x-model", "$store.createBorrow.borrowDate");
             DueDate.Attributes.Add("x-model", "$store.createBorrow.dueDate");
             BorrowDay.Attributes.Add("x-bind:value", "$store.createBorrow.borrowDay");
-
-            BorrowDate.Attributes.Add("min", today);
-            DueDate.Attributes.Add("min", today);
+            BorrowDate.Attributes.Add("x-bind:min", "$store.createBorrow.isBooksSelecetorOpen || $store.createBorrow.isMemberSelectorOpen ? null : new Date().toISOString().split('T')[0]");
+            DueDate.Attributes.Add("x-bind:min", "$store.createBorrow.isBooksSelecetorOpen || $store.createBorrow.isMemberSelectorOpen ? null : $store.createBorrow.borrowDate");
         }
     }
 

@@ -113,4 +113,15 @@ public partial class Dashboard_Borrows_MemberSelector : System.Web.UI.UserContro
         MemberRepeater.DataSource = member;
         MemberRepeater.DataBind();
     }
+
+    protected void SearchTextBox_TextChanged(object sender, EventArgs e)
+    {
+        SearchTextBox.Attributes.Add("x-init", "$el.focus(); $el.setSelectionRange($el.value.length, $el.value.length);");
+
+        CurrentSearchValue.Text = SearchTextBox.Text;
+        CurrentPageLabel.Text = "1";
+
+        LoadMaxPageCount();
+        LoadMember();
+    }
 }

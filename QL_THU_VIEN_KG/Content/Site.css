@@ -470,6 +470,9 @@
   .w-8 {
     width: calc(var(--spacing) * 8);
   }
+  .w-9 {
+    width: calc(var(--spacing) * 9);
+  }
   .w-10 {
     width: calc(var(--spacing) * 10);
   }
@@ -481,9 +484,6 @@
   }
   .w-\[1px\] {
     width: 1px;
-  }
-  .w-\[180px\] {
-    width: 180px;
   }
   .w-full {
     width: 100%;
@@ -505,9 +505,6 @@
   }
   .min-w-\[150px\] {
     min-width: 150px;
-  }
-  .min-w-\[180px\] {
-    min-width: 180px;
   }
   .min-w-full {
     min-width: 100%;
@@ -696,6 +693,9 @@
   }
   .overflow-auto {
     overflow: auto;
+  }
+  .overflow-hidden {
+    overflow: hidden;
   }
   .overflow-y-auto {
     overflow-y: auto;
@@ -1001,6 +1001,9 @@
   }
   .underline-offset-4 {
     text-underline-offset: 4px;
+  }
+  .opacity-0 {
+    opacity: 0%;
   }
   .opacity-70 {
     opacity: 70%;

@@ -48,7 +48,7 @@
                     <div class="flex items-center justify-between px-4 h-14">
                         <div class="flex items-center gap-1.5 text-blue-600 text-xl">
                             <i data-lucide="book" class="text-2xl"></i>
-                            <span class="text-xl font-bold text-gray-900">THU VIEN
+                            <span class="text-xl font-bold text-gray-900">THU VIEN KG
                             </span>
                         </div>
 
@@ -97,7 +97,6 @@
 
             <%-- MAIN CONTAINER --%>
             <main class="flex-1 w-[1px]">
-
                 <%-- HEADER CONTAINER --%>
                 <header class="sticky top-0 flex items-center justify-between px-4 py-2 bg-white px-4 h-14 z-10">
                     <div class="flex gap-2">
@@ -115,15 +114,25 @@
                         <asp:LoginView runat="server" ViewStateMode="Disabled">
                             <AnonymousTemplate>
                                 <ul class="flex gap-1">
-                                    <li><a runat="server" href="~/Accounts/Register">Register</a></li>
                                     <li><a runat="server" href="~/Accounts/Login">Log in</a></li>
                                 </ul>
                             </AnonymousTemplate>
                             <LoggedInTemplate>
                                 <ul class="flex gap-1 text-lg">
-                                    <li><a runat="server" href="~/Accounts/Manage" title="Manage your account">Hello, <%: Context.User.Identity.GetUserName()  %>!</a></li>
                                     <li>
-                                        <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
+                                        <button type="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 rounded-md">
+                                            <i class="h-4 w-4 mr-1" data-lucide="user"></i> 
+                                            <%: Context.User.Identity.GetUserName()  %>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <div class="relative">
+                                            <button type="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 w-9 rounded-md">
+                                                <i class="h-4 w-4" data-lucide="log-out"></i>
+                                            </button>
+                                           
+                                            <asp:LoginStatus ToolTip="Đăng xuất" CssClass="absolute inset-0 opacity-0" runat="server" LogoutText="" LogoutAction="Redirect" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
+                                        </div>
                                     </li>
                                 </ul>
                             </LoggedInTemplate>

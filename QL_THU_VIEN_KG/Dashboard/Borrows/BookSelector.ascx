@@ -13,10 +13,9 @@
             <div class="flex gap-2 w-full">
                 <div class="relative flex-1" x-init="lucide.createIcons()">
                     <i class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" data-lucide="search"></i>
-                    <asp:TextBox runat="server" ID="SearchTextBox" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" placeholder="Tìm kiếm theo tên sách, tác giả, ISBN..." />
+                    <asp:TextBox AutoCompleteType="Disabled" runat="server" ID="SearchTextBox" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" placeholder="Tìm kiếm theo tên sách, tác giả, ISBN..." OnTextChanged="SearchTextBox_TextChanged" />
                     <asp:TextBox runat="server" ID="CurrentSearchValue" class="hidden" aria-hidden="true" />
                 </div>
-                <asp:Button runat="server" CssClass="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2" ID="SearchBtn" Text="Tìm" OnClick="SearchBtn_Click" />
             </div>
             <div class="max-h-[360px] h-[360px] overflow-y-auto">
                 <div class="relative w-full overflow-auto">
@@ -61,8 +60,7 @@
                                           </td>
                                           <td class="p-4 align-middle">
                                               <div x-bind:class="<%# Eval("AvailableCopies") %> === 0 ? 'bg-destructive text-destructive-foreground hover:bg-destructive/80' : 'bg-primary text-primary-foreground hover:bg-primary/80'" class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent">
-                                                  <%# Eval("AvailableCopies") %>/<%# Eval("TotalCopies") %>
-                                              </div>
+                                                  <%# Eval("AvailableCopies") %>/<%# Eval("TotalCopies") %></div>
                                           </td>
                                           <td class="p-4 align-middle">
                                               <button x-bind:disabled="<%# Eval("AvailableCopies") %> === 0" @click="$store.createBorrow.addBook(<%# Eval("ID") %>, '<%# Eval("Title") %>', '<%# Eval("ISBN") %>', '<%# Eval("Author") %>', '<%# Eval("CoverImage") %>', '<%# Eval("Genre.Name") %>', 1, <%# Eval("AvailableCopies") %>) " type="button" class="flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground px-2 py-2 w-full  border-dashed">
